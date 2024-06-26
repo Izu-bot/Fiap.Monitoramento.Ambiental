@@ -1,7 +1,10 @@
 using Asp.Versioning;
+using AutoMapper;
 using Fiap.Monitoramento.Ambiental;
 using Fiap.Monitoramento.Ambiental.Data.Database;
+using Fiap.Monitoramento.Ambiental.Data.Repository;
 using Fiap.Monitoramento.Ambiental.Models;
+using Fiap.Monitoramento.Ambiental.Services;
 using Fiap.Monitoramento.Ambiental.VIewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -9,29 +12,27 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Carregando as variaveis de ambiente do arquivo .env
-DotNetEnv.Env.Load();
-
 #region Configuração do banco de dados
 
-// Obtenha a senha/login/host do banco de dados do arquivo .net
-var dbLogin = Environment.GetEnvironmentVariable("DB_LOGIN");
-var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
-var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-
-
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
-
-connectionString = connectionString
-    .Replace("{DB_LOGIN}", dbLogin)
-    .Replace("{DB_PASSWORD}", dbPassword)
-    .Replace("{DB_HOST}", dbHost);
 
 builder.Services.AddDbContext<DatabaseContext>(
 
     opt => opt.UseOracle(connectionString).EnableSensitiveDataLogging(true)
 
     );
+
+#endregion
+
+#region Repository
+
+builder.Services.AddScoped<IDesastresNaturaisRepository, DesastresNaturaisRepository>();
+
+#endregion
+
+#region Service
+
+builder.Services.AddScoped<IDesastresNaturaisService, DesastresNaturaisService>();
 
 #endregion
 
@@ -45,13 +46,25 @@ var mapperConfig = new AutoMapper.MapperConfiguration(a =>
         // Permite que valores de destino nulo sejam mapeados
         a.AllowNullDestinationValues = true;
 
-        // Define mapeamento
+        // Mapeamento DesastresNaturaisViewModel
         a.CreateMap<DesastresNaturaisModel, DesastresNaturaisViewModel>();
         a.CreateMap<DesastresNaturaisViewModel, DesastresNaturaisModel>();
+
+        // Mapeamento DesastresNaturaisCreateViewModel
+        a.CreateMap<DesastresNaturaisCreateViewModel, DesastresNaturaisModel>();
+        a.CreateMap<DesastresNaturaisModel, DesastresNaturaisCreateViewModel>();
+
+        // Mapeamento DesastresPaginacaoViewModel
+        a.CreateMap<DesastresPaginacaoViewModel, DesastresNaturaisModel>();
+        a.CreateMap<DesastresNaturaisModel, DesastresPaginacaoViewModel>();
     }
 );
 
+// Cria o mapper com base na config definida
+IMapper mapper = mapperConfig.CreateMapper();
 
+// Registra o mapper como serviço
+builder.Services.AddSingleton(mapper);
 #endregion
 
 #region versionamento
