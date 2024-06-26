@@ -1,0 +1,6 @@
+@Fiap.Monitoramento.Ambiental_HostAddress = http://localhost:5097
+
+GET {{Fiap.Monitoramento.Ambiental_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
