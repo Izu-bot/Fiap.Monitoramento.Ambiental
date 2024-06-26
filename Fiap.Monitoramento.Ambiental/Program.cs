@@ -9,9 +9,24 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Carregando as variaveis de ambiente do arquivo .env
+DotNetEnv.Env.Load();
+
 #region Configuração do banco de dados
 
+// Obtenha a senha/login/host do banco de dados do arquivo .net
+var dbLogin = Environment.GetEnvironmentVariable("DB_LOGIN");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+
+
 var connectionString = builder.Configuration.GetConnectionString("DatabaseConnection");
+
+connectionString = connectionString
+    .Replace("{DB_LOGIN}", dbLogin)
+    .Replace("{DB_PASSWORD}", dbPassword)
+    .Replace("{DB_HOST}", dbHost);
+
 builder.Services.AddDbContext<DatabaseContext>(
 
     opt => opt.UseOracle(connectionString).EnableSensitiveDataLogging(true)
