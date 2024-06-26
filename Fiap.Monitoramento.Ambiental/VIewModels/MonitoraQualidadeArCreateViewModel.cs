@@ -2,12 +2,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Fiap.Monitoramento.Ambiental.Models
+namespace Fiap.Monitoramento.Ambiental.VIewModels
 {
-    public class MonitoraQualidadeArModel
+    public class MonitoraQualidadeArCreateViewModel
     {
-        public int MonitorarId { get; set; }
         public DateTime DiaMonitoracao { get; set; }
+
+        [Required]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [EnumDataType(typeof(QualidadeArEnum))]
         public QualidadeArEnum Qualidade { get; set; }
     }
 }

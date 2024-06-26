@@ -8,9 +8,9 @@ namespace Fiap.Monitoramento.Ambiental.Data.Database
     {
         #region Propriedades para manipular as entidades
 
-        public virtual DbSet<DesastresNaturaisModel> desastresNaturais { get; set; }
-        public virtual DbSet<MonitoraQualidadeArModel> MonitoraQualidadeArModels { get; set; }
-        public virtual DbSet<IrrigacaoModel> IrrigacaoModels { get; set; }
+        public virtual DbSet<DesastresNaturaisModel> DesastresNaturais { get; set; }
+        public virtual DbSet<MonitoraQualidadeArModel> MonitorarQualidadeAr { get; set; }
+        public virtual DbSet<IrrigacaoModel> Irrigacao { get; set; }
 
         #endregion
 

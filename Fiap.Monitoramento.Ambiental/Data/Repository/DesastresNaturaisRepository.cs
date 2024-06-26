@@ -14,31 +14,31 @@ namespace Fiap.Monitoramento.Ambiental.Data.Repository
         }
         public void Add(DesastresNaturaisModel desastresNaturais)
         {
-            _databaseContext.desastresNaturais.Add(desastresNaturais);
+            _databaseContext.DesastresNaturais.Add(desastresNaturais);
             _databaseContext.SaveChanges();
         }
 
         public void Delete(DesastresNaturaisModel desastresNaturais)
         {
-            _databaseContext.desastresNaturais.Remove(desastresNaturais);
+            _databaseContext.DesastresNaturais.Remove(desastresNaturais);
             _databaseContext.SaveChanges();
         }
 
-        public IEnumerable<DesastresNaturaisModel> GetAll() => _databaseContext.desastresNaturais.ToList();
+        public IEnumerable<DesastresNaturaisModel> GetAll() => _databaseContext.DesastresNaturais.ToList();
 
         public IEnumerable<DesastresNaturaisModel> GetAllPaginable(int page, int pageSize)
         {
-            return _databaseContext.desastresNaturais
+            return _databaseContext.DesastresNaturais
                 .Skip( (page - 1) * pageSize )
                 .Take(pageSize)
                 .ToList();
         }
 
-        public DesastresNaturaisModel GetById(int id) => _databaseContext.desastresNaturais.Find(id);
+        public DesastresNaturaisModel GetById(int id) => _databaseContext.DesastresNaturais.Find(id);
 
         public void Update(DesastresNaturaisModel desastresNaturais)
         {
-            _databaseContext.desastresNaturais.Update(desastresNaturais);
+            _databaseContext.DesastresNaturais.Update(desastresNaturais);
             _databaseContext.SaveChanges();
         }
     }

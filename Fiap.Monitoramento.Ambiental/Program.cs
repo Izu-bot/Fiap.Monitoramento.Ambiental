@@ -9,6 +9,7 @@ using Fiap.Monitoramento.Ambiental.VIewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,15 +25,27 @@ builder.Services.AddDbContext<DatabaseContext>(
 
 #endregion
 
+#region Configurando a serialização/deserialização do Json
+
+builder.Services.AddControllers()
+    .AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+#endregion
+
 #region Repository
 
 builder.Services.AddScoped<IDesastresNaturaisRepository, DesastresNaturaisRepository>();
+builder.Services.AddScoped<IMonitoraQualidadeArRepository, MonitoraQualidadeArRepository>();
 
 #endregion
 
 #region Service
 
 builder.Services.AddScoped<IDesastresNaturaisService, DesastresNaturaisService>();
+builder.Services.AddScoped<IMonitoraQualidadeArService, MonitoraQualidadeArService>();
 
 #endregion
 
@@ -46,17 +59,27 @@ var mapperConfig = new AutoMapper.MapperConfiguration(a =>
         // Permite que valores de destino nulo sejam mapeados
         a.AllowNullDestinationValues = true;
 
-        // Mapeamento DesastresNaturaisViewModel
+        #region Configuração MVVM DesastresNaturais
         a.CreateMap<DesastresNaturaisModel, DesastresNaturaisViewModel>();
         a.CreateMap<DesastresNaturaisViewModel, DesastresNaturaisModel>();
 
-        // Mapeamento DesastresNaturaisCreateViewModel
         a.CreateMap<DesastresNaturaisCreateViewModel, DesastresNaturaisModel>();
         a.CreateMap<DesastresNaturaisModel, DesastresNaturaisCreateViewModel>();
 
-        // Mapeamento DesastresPaginacaoViewModel
         a.CreateMap<DesastresPaginacaoViewModel, DesastresNaturaisModel>();
         a.CreateMap<DesastresNaturaisModel, DesastresPaginacaoViewModel>();
+        #endregion
+
+        #region Configuração MVVM MonitoraQualidadeAr
+        a.CreateMap<MonitoraQualidadeArModel, MonitoraQualidadeArViewModel>();
+        a.CreateMap<MonitoraQualidadeArViewModel, MonitoraQualidadeArModel>();
+
+        a.CreateMap<MonitoraQualidadeArCreateViewModel, MonitoraQualidadeArModel>();
+        a.CreateMap<MonitoraQualidadeArModel, MonitoraQualidadeArCreateViewModel>();
+
+        a.CreateMap<MonitoraQualidadeArPaginacaoViewModel, MonitoraQualidadeArModel>();
+        a.CreateMap<MonitoraQualidadeArModel, MonitoraQualidadeArPaginacaoViewModel>();
+        #endregion
     }
 );
 
