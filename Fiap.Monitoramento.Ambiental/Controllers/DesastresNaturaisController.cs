@@ -45,7 +45,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Gerente,Usuario")]
-        public ActionResult<DesastresNaturaisViewModel> Get(int id)
+        public async Task<ActionResult<DesastresNaturaisViewModel>> Get(int id)
         {
             var desastre = _service.GetId(id);
             if(desastre == null)
@@ -53,7 +53,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
             var viewModel = _mapper.Map<DesastresNaturaisViewModel>(desastre);
             return Ok(viewModel);
-            
+
         }
 
         [MapToApiVersion(1)]
