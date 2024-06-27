@@ -46,11 +46,11 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin,Gerente,Usuario")]
-        public ActionResult<IrrigacaoViewModel> GetId(int id)
+        public async Task<ActionResult<IrrigacaoViewModel>> GetId(int id)
         {
             var irrigacao = _service.Get(id);
             if(irrigacao == null)
-                NoContent();
+                return NoContent();
 
             var viewModel = _mapper.Map<IrrigacaoViewModel>(irrigacao);
             return Ok(viewModel);
