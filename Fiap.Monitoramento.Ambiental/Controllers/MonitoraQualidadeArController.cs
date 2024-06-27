@@ -3,11 +3,13 @@ using AutoMapper;
 using Fiap.Monitoramento.Ambiental.Models;
 using Fiap.Monitoramento.Ambiental.Services;
 using Fiap.Monitoramento.Ambiental.VIewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Monitoramento.Ambiental.Controllers
 {
+    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]

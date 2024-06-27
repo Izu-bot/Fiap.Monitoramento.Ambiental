@@ -6,10 +6,13 @@ using Fiap.Monitoramento.Ambiental.Data.Repository;
 using Fiap.Monitoramento.Ambiental.Models;
 using Fiap.Monitoramento.Ambiental.Services;
 using Fiap.Monitoramento.Ambiental.VIewModels;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +43,7 @@ builder.Services.AddControllers()
 builder.Services.AddScoped<IDesastresNaturaisRepository, DesastresNaturaisRepository>();
 builder.Services.AddScoped<IMonitoraQualidadeArRepository, MonitoraQualidadeArRepository>();
 builder.Services.AddScoped<IIrrigacaoRepository, IrrigacaoRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 #endregion
 
@@ -48,6 +52,9 @@ builder.Services.AddScoped<IIrrigacaoRepository, IrrigacaoRepository>();
 builder.Services.AddScoped<IDesastresNaturaisService, DesastresNaturaisService>();
 builder.Services.AddScoped<IMonitoraQualidadeArService, MonitoraQualidadeArService>();
 builder.Services.AddScoped<IIrrigacaoService, IrrigacaoService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 #endregion
 
@@ -93,11 +100,47 @@ var mapperConfig = new AutoMapper.MapperConfiguration(a =>
         a.CreateMap<IrrigacaoPaginacaoViewModel, IrrigacaoModel>();
         a.CreateMap<IrrigacaoModel, IrrigacaoPaginacaoViewModel>();
         #endregion
+
+        #region Configuração MVVM Users
+        a.CreateMap<UserViewModel, UserModel>();
+        a.CreateMap<UserModel, UserViewModel>();
+
+        a.CreateMap<UserCreateViewModel, UserModel>();
+        a.CreateMap<UserModel, UserCreateViewModel>();
+
+        #endregion
+
+        #region Configrução MVVM Login
+
+        a.CreateMap<LoginViewModel, UserModel>();
+        a.CreateMap<UserModel, LoginViewModel>();
+
+        #endregion
     }
 );
 
 // Cria o mapper com base na config definida
 IMapper mapper = mapperConfig.CreateMapper();
+
+#region Autenticação
+
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("f+ujXAKHk00L5jlMXo2XhAWawsOoihNP1OiAM25lLSO57+X7uBMQgwPju6yzyePi")),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
+#endregion
 
 // Registra o mapper como serviço
 builder.Services.AddSingleton(mapper);
@@ -149,7 +192,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

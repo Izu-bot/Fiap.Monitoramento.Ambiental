@@ -11,6 +11,7 @@ namespace Fiap.Monitoramento.Ambiental.Data.Database
         public virtual DbSet<DesastresNaturaisModel> DesastresNaturais { get; set; }
         public virtual DbSet<MonitoraQualidadeArModel> MonitorarQualidadeAr { get; set; }
         public virtual DbSet<IrrigacaoModel> Irrigacao { get; set; }
+        public virtual DbSet<UserModel> User { get; set; }
 
         #endregion
 
@@ -77,6 +78,16 @@ namespace Fiap.Monitoramento.Ambiental.Data.Database
                 .HasOne(i => i.MonitoraQualidadeArModel)
                 .WithOne()
                 .HasForeignKey<IrrigacaoModel>(i => i.MonitoraQualidadeArId);
+
+            // Criar tabela de usuário
+            modelBuilder.Entity<UserModel>(entity =>
+            {
+                entity.ToTable("TBL_Usuarios");
+                entity.HasKey(e => e.UserId);
+                entity.Property(e => e.UserName).HasColumnName("User_Name").IsRequired();
+                entity.Property(e => e.PasswordHash).HasColumnName("Password").IsRequired();
+                entity.Property(e => e.Role).HasDefaultValue("Usuario");
+            });
 
             base.OnModelCreating(modelBuilder);
         }
