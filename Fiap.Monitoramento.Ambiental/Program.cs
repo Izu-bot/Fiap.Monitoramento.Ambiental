@@ -39,6 +39,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddScoped<IDesastresNaturaisRepository, DesastresNaturaisRepository>();
 builder.Services.AddScoped<IMonitoraQualidadeArRepository, MonitoraQualidadeArRepository>();
+builder.Services.AddScoped<IIrrigacaoRepository, IrrigacaoRepository>();
 
 #endregion
 
@@ -46,6 +47,7 @@ builder.Services.AddScoped<IMonitoraQualidadeArRepository, MonitoraQualidadeArRe
 
 builder.Services.AddScoped<IDesastresNaturaisService, DesastresNaturaisService>();
 builder.Services.AddScoped<IMonitoraQualidadeArService, MonitoraQualidadeArService>();
+builder.Services.AddScoped<IIrrigacaoService, IrrigacaoService>();
 
 #endregion
 
@@ -79,6 +81,17 @@ var mapperConfig = new AutoMapper.MapperConfiguration(a =>
 
         a.CreateMap<MonitoraQualidadeArPaginacaoViewModel, MonitoraQualidadeArModel>();
         a.CreateMap<MonitoraQualidadeArModel, MonitoraQualidadeArPaginacaoViewModel>();
+        #endregion
+
+        #region Configuração MVVM Irrigacao
+        a.CreateMap<IrrigacaoViewModel, IrrigacaoModel>();
+        a.CreateMap<IrrigacaoModel, IrrigacaoViewModel>();
+
+        a.CreateMap<IrrigacaoCreateViewModel, IrrigacaoModel>();
+        a.CreateMap<IrrigacaoModel, IrrigacaoCreateViewModel>();
+
+        a.CreateMap<IrrigacaoPaginacaoViewModel, IrrigacaoModel>();
+        a.CreateMap<IrrigacaoModel, IrrigacaoPaginacaoViewModel>();
         #endregion
     }
 );
