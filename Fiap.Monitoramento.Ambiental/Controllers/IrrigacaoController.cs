@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Monitoramento.Ambiental.Controllers
 {
-    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class IrrigacaoController : ControllerBase
     {
         private readonly IIrrigacaoService _service;
@@ -27,6 +27,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<IEnumerable<IrrigacaoPaginacaoViewModel>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var irrigacao = _service.GetAll(page, pageSize);
@@ -44,6 +45,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<IrrigacaoViewModel> GetId(int id)
         {
             var irrigacao = _service.Get(id);
@@ -56,6 +58,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPost]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Post([FromBody] IrrigacaoCreateViewModel model)
         {
             var irrigacao = _mapper.Map<IrrigacaoModel>(model);
@@ -66,6 +69,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Put(int id, [FromBody] IrrigacaoViewModel model)
         {
             var irrigacao = _service.Get(id);
@@ -80,6 +84,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Delete(int id)
         {
             _service.Delete(id);

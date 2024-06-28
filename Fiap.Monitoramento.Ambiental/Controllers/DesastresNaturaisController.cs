@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Monitoramento.Ambiental.Controllers
 {
-    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class DesastresNaturaisController : ControllerBase
     {
         private readonly IDesastresNaturaisService _service;
@@ -26,6 +26,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<IEnumerable<DesastresPaginacaoViewModel>> Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var desastros = _service.GetAllPaginable(page, pageSize);
@@ -43,6 +44,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<DesastresNaturaisViewModel> Get(int id)
         {
             var desastre = _service.GetId(id);
@@ -56,6 +58,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Put(int id, [FromBody]  DesastresNaturaisViewModel model)
         {
             var desastreExistente = _service.GetId(id);
@@ -70,6 +73,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Delete(int id)
         {
             _service.Delete(id);
@@ -78,6 +82,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPost]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Post([FromBody]  DesastresNaturaisCreateViewModel viewModel)
         {
             var desastre = _mapper.Map<DesastresNaturaisModel>(viewModel);

@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Monitoramento.Ambiental.Controllers
 {
-    [Authorize]
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class MonitoraQualidadeArController : ControllerBase
     {
         private readonly IMonitoraQualidadeArService _service;
@@ -26,6 +26,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<IEnumerable<MonitoraQualidadeArPaginacaoViewModel>> Get([FromQuery]int page = 1, [FromQuery] int pageSize = 10)
         {
             var monitorar = _service.GetAll(page, pageSize);
@@ -43,6 +44,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Gerente,Usuario")]
         public ActionResult<MonitoraQualidadeArViewModel> Get(int id)
         {
             var monitoramento = _service.GetId(id);
@@ -56,6 +58,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPost]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Post([FromBody] MonitoraQualidadeArCreateViewModel viewModel)
         {
             if(!ModelState.IsValid)
@@ -71,6 +74,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Put(int id, [FromBody] MonitoraQualidadeArViewModel model)
         {
             var monitorar = _service.GetId(id);
@@ -85,6 +89,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Delete(int id)
         {
             var monitorar = _service.GetId(id);

@@ -3,6 +3,7 @@ using AutoMapper;
 using Fiap.Monitoramento.Ambiental.Models;
 using Fiap.Monitoramento.Ambiental.Services;
 using Fiap.Monitoramento.Ambiental.VIewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
     [ApiVersion(1)]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
@@ -24,6 +26,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult<IEnumerable<UserViewModel>> Get()
         {
             var user = _service.GetAll();
@@ -34,6 +37,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult<UserViewModel> Get(int id)
         {
             var user = _service.GetById(id);
@@ -46,6 +50,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Post([FromBody] UserCreateViewModel user)
         {
             var usuario = _mapper.Map<UserModel>(user);
@@ -57,6 +62,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Put(int id, [FromBody] UserViewModel user)
         {
             var usuario = _service.GetById(id);
@@ -71,6 +77,7 @@ namespace Fiap.Monitoramento.Ambiental.Controllers
 
         [MapToApiVersion(1)]
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Gerente")]
         public ActionResult Delete(int id)
         {
             _service.Delete(id);
