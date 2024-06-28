@@ -32,7 +32,7 @@ namespace Tests.Fiap.Monitoramento.Ambiental
 
             // Assert
             Assert.NotNull(okResult);
-            Assert.AreEqual(200, okResult.StatusCode);
+            Assert.That(okResult.StatusCode, Is.EqualTo(200));
         }
     }
 }

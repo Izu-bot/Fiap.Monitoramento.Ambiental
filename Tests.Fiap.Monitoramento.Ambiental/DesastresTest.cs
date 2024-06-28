@@ -33,7 +33,7 @@ namespace Tests.Fiap.Monitoramento.Ambiental
 
             // Assert - Verificação dos resultados esperados
             Assert.NotNull(okResult); // Verifica se não é nulo
-            Assert.AreEqual(200, okResult.StatusCode); // Verifica se o status code é 200 (OK)
+            Assert.That(okResult.StatusCode, Is.EqualTo(200)); // Verifica se o status code é 200 (OK)
         }
     }
 }
