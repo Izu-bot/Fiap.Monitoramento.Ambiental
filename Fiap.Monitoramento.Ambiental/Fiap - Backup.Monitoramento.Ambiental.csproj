@@ -33,8 +33,4 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include=".github\01-primeiro-workflow.yaml" />
-  </ItemGroup>
-
 </Project>
