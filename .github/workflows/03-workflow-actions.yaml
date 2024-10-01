@@ -20,5 +20,5 @@ jobs:
             - name: Executar scripts
               run: |
                 git branch
-                java --version 
-                mvn clean package
+                dotnet --version 
+                dotnet clean
