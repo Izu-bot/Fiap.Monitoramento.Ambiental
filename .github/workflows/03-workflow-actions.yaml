@@ -5,7 +5,7 @@ on:
         branches: "feature/**"
 
 jobs:
-    checkout_dotnet_docker:
+    checkout_dotnet:
         runs-on: ubuntu-latest
         steps:            
             - name: Git Checkout
@@ -16,13 +16,6 @@ jobs:
               with:
                 dotnet-version: '8.0.x'
             - run: dotnet build
-
-            - name: Build
-              uses: docker/build-push-action@v6
-              with:
-                push: false
-                context: .
-                file: ./Fiap.Monitoramento.Ambiental/Dockerfile
 
             - name: Executar scripts
               run: |
