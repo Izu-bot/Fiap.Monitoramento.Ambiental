@@ -1,0 +1,29 @@
+name: 03 - Actions
+
+on:
+  push:
+    branches: "feature/**"
+
+jobs:
+  checkout_dotnet_docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git Checkout
+      uses: actions/checkout@v4.2.0
+
+      - names:  Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4.0.1
+      with:
+        dotnet-version: '8.0.x'
+      - run: dotnet build
+
+      - name: Build Docker
+      uses: docker/build-push-action@v6.9.0
+      with:
+        push: false 
+
+      - name: Executar scrips
+      run: |
+        git branch
+        dotnet --version
+        dotnet clean
