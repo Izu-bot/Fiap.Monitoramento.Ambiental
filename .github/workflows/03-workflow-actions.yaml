@@ -5,7 +5,7 @@ on:
         branches: "feature/**"
 
 jobs:
-    checkout_java_docker:
+    checkout_dotnet_docker:
         runs-on: ubuntu-latest
         steps:            
             - name: Git Checkout
