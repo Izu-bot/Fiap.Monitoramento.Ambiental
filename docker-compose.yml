@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  web:
+    image: suausuario/suaaplicacao:${ENVIRONMENT}
+    build:
+      context: ./Fiap.Monitoramento.Ambiental
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ORACLE_DB_HOST=${ORACLE_DB_HOST}
+      - ORACLE_DB_PORT=${ORACLE_DB_PORT}
+      - ORACLE_DB_USER=${ORACLE_DB_USER}
+      - ORACLE_DB_PASSWORD=${ORACLE_DB_PASSWORD}
+      - ORACLE_DB_SID=${ORACLE_DB_SID}
