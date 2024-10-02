@@ -24,14 +24,3 @@ jobs:
       
       - name: Build
         run: dotnet build
-
-  deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Deploy to environment
-        run: |
-          docker-compose -f docker-compose.yml up -d
-        
-        env:
-          ENVIRONMENT: $({ github.ref == 'refs/heads/main' && 'production' || 'staging'})
