@@ -22,7 +22,3 @@ jobs:
       
       - name: Build
         run: dotnet build
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
