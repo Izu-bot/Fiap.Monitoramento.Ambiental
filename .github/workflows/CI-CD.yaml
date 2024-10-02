@@ -21,6 +21,9 @@ jobs:
         run: dotnet restore
   
   deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
       - name: Login docker hub
         uses: docker/login-action@v3
         with:
